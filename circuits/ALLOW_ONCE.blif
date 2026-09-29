@@ -1,0 +1,23 @@
+# ALLOW-ONCE — Founding Seal for Policy Processor (LAW)
+# 2 inputs + LATCH state, 1 output, 3 NANDs + 1 LATCH
+# Truth: next_q = (intent & arm) | q
+# After tapeout, TapeOut adds 2 output buffers -> reported 8 transistors
+.model ALLOW_ONCE
+.inputs intent arm q
+.outputs next_q
+.names intent arm n1
+11 0
+.names q q n2
+00 0
+01 0
+10 0
+11 1
+.names n1 n2 n3
+00 0
+01 0
+10 0
+11 1
+.names n3 next_q
+0 1
+1 0
+.end

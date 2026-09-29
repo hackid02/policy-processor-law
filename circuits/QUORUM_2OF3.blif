@@ -1,0 +1,20 @@
+# QUORUM_2OF3 — 3 inputs, 1 output, >=2 signers
+# Logic: (s1 & s2) | (s1 & s3) | (s2 & s3)
+# Truth: 000->0, 001->0, 010->0, 011->1, 100->0, 101->1, 110->1, 111->1
+# NAND implementation: 5 ANDs + 2 ORs = 9 NANDs after De Morgan optimization
+.model QUORUM_2OF3
+.inputs s1 s2 s3
+.outputs quorum
+.names s1 s2 a12
+11 1
+.names s1 s3 a13
+11 1
+.names s2 s3 a23
+11 1
+.names a12 a13 o1
+1- 1
+-1 1
+.names o1 a23 quorum
+1- 1
+-1 1
+.end

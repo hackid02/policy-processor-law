@@ -1,0 +1,14 @@
+[profile.default]
+src = "contracts"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.20"
+rpc_endpoints = { xlayer = "https://xlayerrpc.okx.com", xlayer_fallback = "https://rpc.xlayer.tech", bsc = "https://bsc-dataseed.binance.org" }
+etherscan = { xlayer = { key = "dummy", url = "https://www.oklink.com/xlayer" } }
+
+[profile.default.optimizer]
+enabled = true
+runs = 200
+
+[rpc_endpoints]
+xlayer = "https://xlayerrpc.okx.com"

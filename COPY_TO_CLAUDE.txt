@@ -1,0 +1,52 @@
+I ATTACHED policy-processor-audit.zip (43K) — contains all circuits, UI, tests, docs. Audit this TapeOut hackathon project now.
+
+=== PROJECT: Policy Processor LAW — Circuit-governed vaults on X Layer 196 ===
+Live: Processor 0x6F74553bAe997e896AD76BaC27401602A01790E8, Factory 0x1f09DAeFA827f02CBb40967cc91b259763760761, Transistors 0xeDDe115d032bE238cd7AA37AEc183262C598a941, Deployer 0xb9C37b75cF53EBfeC9eAf16b35E77541aB941556
+RPC: https://rpc.xlayer.tech
+
+Txs (OKLink):
+Create 0xa5ff67333838d8471f9434e9a08f93eceb52669b0dcda55e785cb57b29102887 block 71932071
+Mint 50 0xe050bd4537df9601423d1f51b45c77ea8a9abe25b9d73c07bd8b3c5fe9e897f6 block 71932752 cost mintPrice*50 + protocolFee 0.00066 = 0.00396 OKB
+Tape1 id1 SpendLimit 2g 14B 0x20a48fd1d622861333360d0e900bbfe468ac751d2525dc5844284dd568132f23 block 71932763
+Tape2 id2 Quorum 12g 84B 0x1a1e27a6f6ff3f4a10991b16e4267ee3fbfb93bdc1e3ea4d3e7d42f18c0c2182 block 71932766
+Tape3 id3 Mood 12g 84B 0x600d8ce1be00ac04475dcdefab8e36388778b3c083f1bd920ed85c469805001e block 71932770
+Tape4 id4 DeadMan 6g 42B 0x38cf6263380007e20b5b1e6bbf60c0d4af3566d1b09e9489f23f1fd9261bef7e block 71932774
+Tape5 id5 RuleMux 18g 126B 0x8cedca9b582dab79d70ce09df8af345259b7e108e61abe359c76200b76a4fe00 block 71932777
+Total 50 burned, balance 0, 0.0074 OKB left dust — DONE spending, no more mint.
+
+Eval encoding: bit-packed LSB first, 1 byte per up to 8 inputs. Example SpendLimit [ah=1,dh=1] -> packed=1|2=3 -> 0x03 -> eval -> 0x01 DENY. Output 0x00=ALLOW, 0x01=DENY. Truth tables in JSON must match on-chain eval for 68 cases (4+8+16+8+32) — verified 68/68 PASS.
+
+UI: web/app/page.tsx 774 lines, Next.js, 1120px shell, #E6E8EB hairline rgba 0.06, 44px mobile, bottom nav, glass blur20px saturate180% + rgba(255,255,255,0.72) + border rgba(255,255,255,0.6), cards independent segments marginBottom, short no black line, single clean footer. Must keep technical 10/10 and UI 10/10. No Naija branding.
+
+7 Ways Stack: 1.Vault Guard (finance wedge), 2.Permission Seal (Quorum multisig), 3.Mood ASIC FOMO/FEAR/HOLD/EXIT, 4.DeadMan heartbeat lock, 5.RuleMux SpendLimit+Quorum->Hybrid, 6.TapeID coin 80/20 IGNIX, 7.Fabrica bounty smaller circuit wins.
+
+=== YOUR TASKS — DO ALL, NO HALLUCINATION ===
+
+1. CIRCUIT LOGIC AUDIT:
+- compiler.mjs: NAND encoding, nextIdx=2+nIn, encodeNAND 7-byte aligned, truthTable exhaustive — off-by-one? minimal gates? SpendLimit 2g AND minimal? Quorum 12g majority minimal or can be smaller (Fabrica)?
+- Verify each JSON truth table logic: SpendLimit AND, Quorum 2-of-3, Mood FOMO=ALLOW FEAR=DENY etc, DeadMan [0,0,0]->1 [1,0,0]->0 etc, RuleMux hybrid = (ah&dh)|!quorum — correct?
+- Bit-packing LSB first — endianness bug?
+- Monotonicity: riskier input never softer verdict?
+
+2. DEPLOY SCRIPT AUDIT:
+- deploy-xlayer.mjs: protocolFee fix mintPrice*n+protocolFee + withdraw() pattern from Stego — reentrancy? unchecked? mint id 0=NAND correct? tapeout value TAPEOUT_FEE 0.0013 OKB front-running? economics griefing?
+
+3. WEB UI STRESS TEST:
+- page.tsx useState ah,dh,tvl,dailyOutflow,mood,alive,s1/s2/s3 — stale closure in handleWithdraw? dailyOutflow functional update? TVL Math.max(0) prevents negative? isLoading prevents double? eval bit-packed fixed from 0x0ah0dh? glass performance mobile? cards marginBottom independent? pills grouped? boring layer empty (∅ + Test buttons), loading 0.4s, error TVL insufficient DEADMAN LOCKED, success ALLOW/DENY+OKLink+Gas0? footer single not duplicated? deploy button was dead now 5 Live ✓ scroll+OKLink? 44px mobile? overflow-x? no Nigerian text?
+
+4. SECURITY:
+- Private key leak? (env PRIVATE_KEY not hardcoded) XSS via oklink target="_blank" rel="noopener" ok? infinite loop 256*256? gas griefing eval view Gas0 ok? burn griefing 50 burned ok?
+
+5. IDEA 10/10:
+- docs/suraj-7-ways.md covers all 7? Compare vs Seal (8g+8g no vault), Stego (112/161/246g heavy), RuleChip (72/70/22g game), Fabrica (market), TapeID (21g coin) — our edge finance wedge + all 7 in 50g valid? Usefulness Before $2M config vs After Law Card NFT clear?
+
+6. STRESS TEST:
+- 100 rapid withdraws dailyOutflow cap 10 overflow? TVL >=0? mood+deadman+quorum combined finalDeny logic? bit-packed 0x00..0xFF for 5 circuits any revert?
+
+=== OUTPUT FORMAT ===
+For each bug: [Critical/High/Medium/Low/Info] file:line — description — exploit scenario — fix code snippet
+UI: description + CSS fix
+Gas: optimization
+Final scores: Technical /10, UI /10, Idea /10 with justification
+Verdict: OK to submit or must-fix before submission
+Only report bugs provable from attached files + live RPC https://rpc.xlayer.tech

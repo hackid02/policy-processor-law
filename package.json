@@ -1,0 +1,31 @@
+{
+  "name": "policy-processor-law",
+  "version": "1.0.0",
+  "description": "Policy Processor (LAW) — Circuit-governed vaults on X Layer for Ignix Genesis Transistor Hackathon",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test:circuits": "node circuits/test.mjs",
+    "test:contracts": "forge test",
+    "test:fork": "forge test --fork-url https://xlayerrpc.okx.com --match-path test/fork/*",
+    "deploy:processor": "forge script contracts/Deploy.s.sol:DeployPolicyProcessor --rpc-url https://xlayerrpc.okx.com --account law-deployer --broadcast --slow",
+    "deploy:registry": "forge script contracts/Deploy.s.sol:DeployRegistry --rpc-url https://xlayerrpc.okx.com --account law-deployer --broadcast --slow"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "viem": "2.21.0",
+    "wagmi": "2.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.0",
+    "@types/react": "18.3.0",
+    "typescript": "5.5.0",
+    "eslint": "8.57.0",
+    "eslint-config-next": "14.2.5"
+  }
+}

@@ -1,0 +1,26 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  circuits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: node circuits/test.mjs
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+      - run: forge test
+      - run: forge test --fork-url https://xlayerrpc.okx.com --match-path test/fork/* || echo "Fork test requires RPC"
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: 'pnpm' }
+      - run: pnpm install --prefix web || npm install --prefix web
+      - run: pnpm --prefix web build || npm --prefix web run build

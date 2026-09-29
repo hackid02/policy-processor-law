@@ -1,0 +1,14 @@
+# SPEND_LIMIT — The Wedge (MVP 2-bit, expandable to 8-bit)
+# Inputs: amount_high (1=amount>5), daily_high (1=daily_total>5)
+# Output: deny (0=ALLOW, 1=DENY) where DENY = amount_high & daily_high
+# NAND implementation: AND = NAND + NOT
+# Truth table: 00->0, 01->0, 10->0, 11->1
+.model SPEND_LIMIT
+.inputs amount_high daily_high
+.outputs deny
+.names amount_high daily_high n1
+11 0
+.names n1 deny
+0 1
+1 0
+.end
