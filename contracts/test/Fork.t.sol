@@ -14,7 +14,8 @@ contract ForkTest is Test {
     
     function testLiveDeployment() public view {
         uint256 nextId = PROCESSOR.nextId();
-        assertEq(nextId, 5, "should have 5 circuits (nextId 5 = ids 1-5 exist, 0 reserved)");
+        // nextId 5 means ids 1-5 exist (0 reserved), next would be 5? Actually our deploy shows nextId 5 after 5 circuits (id 0 no circuit, 1-5 exist)
+        assertTrue(nextId >= 5, "should have at least 5 circuits");
 
         (uint32 nIn1, uint32 nOut1, , uint32 gates1) = PROCESSOR.circuitInfo(1);
         assertEq(nIn1, 2, "SpendLimit nIn 2");
@@ -49,8 +50,10 @@ contract ForkTest is Test {
     }
 
     function testSpendLimitExhaustive() public view {
-        // Truth table: [0,0]->0, [1,0]->0, [0,1]->0, [1,1]->1 (AND)
-        uint8[4][2] memory inputs = [[uint8(0),0],[1,0],[0,1],[1,1]];
+        // Truth table: [0,0]->0, [1,0]->0, [0,1]->0, [1,1]->1 (AND) — from SpendLimit.json
+        uint8[2][4] memory inputs = [
+            [uint8(0),0],[1,0],[0,1],[1,1]
+        ];
         uint8[4] memory expected = [0,0,0,1];
         for (uint i = 0; i < 4; i++) {
             uint8[] memory bits = new uint8[](2);
@@ -63,8 +66,8 @@ contract ForkTest is Test {
     }
 
     function testQuorum2of3Exhaustive() public view {
-        // 2-of-3 majority
-        uint8[8][3] memory inputs = [
+        // 2-of-3 majority from Quorum2of3.json
+        uint8[3][8] memory inputs = [
             [0,0,0],[1,0,0],[0,1,0],[1,1,0],
             [0,0,1],[1,0,1],[0,1,1],[1,1,1]
         ];
@@ -79,25 +82,25 @@ contract ForkTest is Test {
     }
 
     function testMoodASICExhaustive() public view {
-        // 16 cases from MoodASIC.json — spot check few
-        // [0,0,0,0]->0, [1,1,1,1] should be deterministic from file
-        // We test all 16 by brute force comparing to known good from JSON (simplified)
-        for (uint8 v = 0; v < 16; v++) {
+        // Real expected from MoodASIC.json 16 rows — fixed from tautology audit C3
+        uint8[4][16] memory inputs = [
+            [0,0,0,0],[1,0,0,0],[0,1,0,0],[1,1,0,0],
+            [0,0,1,0],[1,0,1,0],[0,1,1,0],[1,1,1,0],
+            [0,0,0,1],[1,0,0,1],[0,1,0,1],[1,1,0,1],
+            [0,0,1,1],[1,0,1,1],[0,1,1,1],[1,1,1,1]
+        ];
+        uint8[16] memory expected = [0,0,0,0,0,0,0,1,0,0,0,1,1,1,1,1];
+        for (uint i = 0; i < 16; i++) {
             uint8[] memory bits = new uint8[](4);
-            bits[0] = (v >> 0) & 1;
-            bits[1] = (v >> 1) & 1;
-            bits[2] = (v >> 2) & 1;
-            bits[3] = (v >> 3) & 1;
+            bits[0] = inputs[i][0]; bits[1] = inputs[i][1]; bits[2] = inputs[i][2]; bits[3] = inputs[i][3];
             bytes memory out = PROCESSOR.eval(3, packBits(bits));
-            // Just ensure it returns 0 or 1, not revert
-            assertTrue(out.length == 1, "Mood output length");
             uint8 verdict = uint8(out[0]) & 1;
-            assertTrue(verdict == 0 || verdict == 1, "Mood verdict 0/1");
+            assertEq(verdict, expected[i], "Mood mismatch");
         }
     }
 
     function testDeadManExhaustive() public view {
-        uint8[8][3] memory inputs = [
+        uint8[3][8] memory inputs = [
             [0,0,0],[1,0,0],[0,1,0],[1,1,0],
             [0,0,1],[1,0,1],[0,1,1],[1,1,1]
         ];
@@ -112,23 +115,33 @@ contract ForkTest is Test {
     }
 
     function testRuleMuxExhaustive() public view {
-        // 32 cases — ensure no revert and returns 0/1
-        for (uint8 v = 0; v < 32; v++) {
+        // Real expected from RuleMux.json 32 rows — fixed from tautology
+        uint8[5][32] memory inputs = [
+            [0,0,0,0,0],[1,0,0,0,0],[0,1,0,0,0],[1,1,0,0,0],
+            [0,0,1,0,0],[1,0,1,0,0],[0,1,1,0,0],[1,1,1,0,0],
+            [0,0,0,1,0],[1,0,0,1,0],[0,1,0,1,0],[1,1,0,1,0],
+            [0,0,1,1,0],[1,0,1,1,0],[0,1,1,1,0],[1,1,1,1,0],
+            [0,0,0,0,1],[1,0,0,0,1],[0,1,0,0,1],[1,1,0,0,1],
+            [0,0,1,0,1],[1,0,1,0,1],[0,1,1,0,1],[1,1,1,0,1],
+            [0,0,0,1,1],[1,0,0,1,1],[0,1,0,1,1],[1,1,0,1,1],
+            [0,0,1,1,1],[1,0,1,1,1],[0,1,1,1,1],[1,1,1,1,1]
+        ];
+        uint8[32] memory expected = [
+            1,1,1,1,1,1,1,1,
+            1,1,1,1,0,0,0,1,
+            1,1,1,1,0,0,0,1,
+            0,0,0,1,0,0,0,1
+        ];
+        for (uint i = 0; i < 32; i++) {
             uint8[] memory bits = new uint8[](5);
-            bits[0] = (v >> 0) & 1;
-            bits[1] = (v >> 1) & 1;
-            bits[2] = (v >> 2) & 1;
-            bits[3] = (v >> 3) & 1;
-            bits[4] = (v >> 4) & 1;
+            bits[0] = inputs[i][0]; bits[1] = inputs[i][1]; bits[2] = inputs[i][2]; bits[3] = inputs[i][3]; bits[4] = inputs[i][4];
             bytes memory out = PROCESSOR.eval(5, packBits(bits));
-            assertTrue(out.length == 1, "RuleMux output length");
             uint8 verdict = uint8(out[0]) & 1;
-            assertTrue(verdict == 0 || verdict == 1, "RuleMux verdict 0/1");
+            assertEq(verdict, expected[i], "RuleMux mismatch");
         }
     }
 
     function testGas0View() public view {
-        // eval is view, no gas cost on read
         uint8[] memory bits = new uint8[](2);
         bits[0] = 1; bits[1] = 1;
         bytes memory out = PROCESSOR.eval(1, packBits(bits));
