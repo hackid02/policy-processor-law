@@ -1,5 +1,7 @@
 # Policy Processor LAW — Circuit-governed Vaults on X Layer
 
+**Live Demo:** https://policyprocessor.vercel.app — GitHub: https://github.com/hackid02/policy-processor-law
+
 **We help vaults enforce withdrawal rules that can't be edited after deployment.**
 
 Before: Config file in GitHub, editable silently, $2M drained.  

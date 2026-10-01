@@ -38,8 +38,9 @@ Total: 50 transistors burned (2+12+12+6+18), balance 0, 68 exhaustive proofs (4+
 
 ### Demo
 
-- **Live Preview:** https://3000-...e2b.app (Next.js dev, 1120px, glass morphism)
-- **Local:** `cd web && npm install && npm run dev`
+- **Live Production:** https://policyprocessor.vercel.app — Professional URL, 17s build, 68 exhaustive / 5 circuits / 5 Live verified
+- **Vercel Deployment:** https://policy-processor-jactfuon4-hackid3.vercel.app (direct build URL)
+- **Local Dev:** `cd web && npm install && npm run dev` — https://3000-...e2b.app
 - **Wedge Flow:** Deposit 1 OKB → Withdraw 0.9 (over-limit) → BLOCKED (DENY, OKLink receipt, Gas0) vs 0.05 → ALLOW (TVL updated). Before/After obvious in 1 click.
 - **Features:** Mood toggle FOMO/FEAR/HOLD/EXIT, DeadMan heartbeat 30s window → LOCKED, Quorum 2/3, RuleMux Hybrid, TapeID coin launch
 
@@ -103,6 +104,7 @@ Per user constraint: no Nigerian / NaijaPay Guard branding. Professional global 
 
 - **Processor:** 0x6F74553bAe997e896AD76BaC27401602A01790E8
 - **Deployer:** 0xb9C37b75cF53EBfeC9eAf16b35E77541aB941556
-- **Demo:** [Preview URL] + GitHub repo
-- **GitHub:** [Your repo link]
+- **Demo:** https://policyprocessor.vercel.app
+- **GitHub:** https://github.com/hackid02/policy-processor-law
+- **Vercel Build:** https://policy-processor-jactfuon4-hackid3.vercel.app
 - **Description:** Circuit-governed vaults — 5 Law Cards (SpendLimit, Quorum, Mood, DeadMan, RuleMux) enforce withdrawal rules that can't be edited after deployment. 7 Ways Stack: Vault Guard + Permission Seal + Mood ASIC + Dead Man + RuleMux + TapeID coin 80/20 + Fabrica bounty. 50 transistors burned, 68 exhaustive PASS, live eval Gas0 on X Layer 196.

@@ -83,7 +83,9 @@ All 68 evals return expected truth table values.
 - OKLink Processor: https://www.oklink.com/xlayer/address/0x6F74553bAe997e896AD76BaC27401602A01790E8
 - OKLink CreateTx: https://www.oklink.com/xlayer/tx/0xa5ff67333838d8471f9434e9a08f93eceb52669b0dcda55e785cb57b29102887
 - TapeOut: https://tapeout.net/#l2/xlayer/0x6F74553bAe997e896AD76BaC27401602A01790E8
-- Preview: https://3000-...e2b.app (local dev)
+- **Live Production:** https://policyprocessor.vercel.app (professional, verified 68 exhaustive / 5 circuits / 5 Live)
+- **Vercel Build:** https://policy-processor-jactfuon4-hackid3.vercel.app
+- Local Dev: https://3000-...e2b.app
 
 ## Next Steps for Hackathon Submission
 
