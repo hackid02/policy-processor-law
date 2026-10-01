@@ -295,7 +295,7 @@ export default function Home() {
               <div style={{fontWeight:700, fontSize:15, lineHeight:1.1, display:"flex", alignItems:"center", gap:8}}>Policy Processor <span style={{width:5, height:5, background:theme.green, borderRadius:"50%"}}/></div>
               <div style={{display:"flex", alignItems:"center", gap:8}}>
                 <span style={{fontSize:11, background:theme.pillBg, border:`1px solid ${theme.pillBorder}`, padding:"2px 8px", borderRadius:20, fontWeight:600}}>LAW - Genesis</span>
-                <span style={{...mono, fontSize:10, color:theme.dim}}>X Layer 196 · {rpcStatus==='live'?'LIVE RPC':'mock'} · 65,536 ✓</span>
+                <span style={{...mono, fontSize:10, color:theme.dim}}>X Layer 196 · {rpcStatus==='live'?'LIVE RPC':'mock'} · 68 exhaustive ✓</span>
               </div>
             </div>
           </div>
@@ -408,8 +408,8 @@ export default function Home() {
               <div style={{fontSize:13, color:theme.muted, lineHeight:1.5}}>Circuit-governed vaults · Seal · Mood · Dead Man · RuleMux · TapeID coin · Fabrica bounty</div>
             </div>
             <div style={{display:"flex", gap:8, flexWrap:"wrap", alignItems:"center"}}>
-              <span style={pillBase(theme.bg2, theme.muted, theme.border)}>6 circuits · Gas 0 · TapeKit</span>
-              <span style={pillBase(theme.greenBg, theme.green, theme.greenBorder)}>65,536/65,536 PASS</span>
+              <span style={pillBase(theme.bg2, theme.muted, theme.border)}>5 circuits · Gas 0 · TapeKit</span>
+              <span style={pillBase(theme.greenBg, theme.green, theme.greenBorder)}>68/68 PASS</span>
               <span style={pillBase(theme.surface, theme.muted, theme.border)}>mono ✓</span>
             </div>
           </div>
@@ -480,7 +480,7 @@ export default function Home() {
               </div>
               <div style={segPills}>
                 <div style={{display:"flex", gap:8, flexWrap:"wrap"}}>
-                  <span style={pillBase(theme.greenBg, theme.green, theme.greenBorder)}>65,536 PASS</span>
+                  <span style={pillBase(theme.greenBg, theme.green, theme.greenBorder)}>68 PASS</span>
                   <span style={pillBase(theme.surface, theme.muted, theme.border)}>mono ✓</span>
                   <span style={pillBase(liveEval?.source?.includes('X Layer') ? theme.greenBg : theme.surface, liveEval?.source?.includes('X Layer') ? theme.green : theme.muted, liveEval?.source?.includes('X Layer') ? theme.greenBorder : theme.border)}>{liveEval?.source?.includes('X Layer')?'LIVE RPC':'eval() view'}</span>
                 </div>
