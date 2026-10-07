@@ -21,3 +21,9 @@ This file records the initial corrected release. Subsequent successful main-bran
 
 ## Boundaries unchanged
 No new vault or registry contract was deployed, no tokens were minted, no real funds moved, and no hackathon form was submitted by this publication. Courtroom balances remain simulated. The reference contracts remain unaudited. The older long-form video shows the prior build and must not be described as a capture of this corrected frontend without an update or disclosure.
+
+## Restored-interface release
+
+The follow-up release restores the original LAW book, card styling, theme controls and IGNIX / X Layer / TapeOut footer. It adds the approved guided Courtroom walkthrough, clear circuit boundaries and visible deployment evidence. The hero and footer explicitly acknowledge real OKB-funded manufacturing while identifying Courtroom balances and withdrawals as simulated. No reference-contract deployment or blockchain write is part of this release.
+
+See SUBMISSION.md for the architecture trade-off, manufacturing evidence and remaining organizer/video/disclosure checks. Use the GitHub merge commit and Vercel deployment metadata to identify the release actually served at the public URL; the historical deployment IDs above describe the earlier corrected release.

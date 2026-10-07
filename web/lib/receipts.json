@@ -1,0 +1,30 @@
+[
+  {
+    "label": "Create processor",
+    "hash": "0xa5ff67333838d8471f9434e9a08f93eceb52669b0dcda55e785cb57b29102887"
+  },
+  {
+    "label": "Mint transistors",
+    "hash": "0xe050bd4537df9601423d1f51b45c77ea8a9abe25b9d73c07bd8b3c5fe9e897f6"
+  },
+  {
+    "label": "Tape SpendLimit",
+    "hash": "0x20a48fd1d622861333360d0e900bbfe468ac751d2525dc5844284dd568132f23"
+  },
+  {
+    "label": "Tape Quorum",
+    "hash": "0x1a1e27a6f6ff3f4a10991b16e4267ee3fbfb93bdc1e3ea4d3e7d42f18c0c2182"
+  },
+  {
+    "label": "Tape Mood",
+    "hash": "0x600d8ce1be00ac04475dcdefab8e36388778b3c083f1bd920ed85c469805001e"
+  },
+  {
+    "label": "Tape Dead Man",
+    "hash": "0x38cf6263380007e20b5b1e6bbf60c0d4af3566d1b09e9489f23f1fd9261bef7e"
+  },
+  {
+    "label": "Tape RuleMux",
+    "hash": "0x8cedca9b582dab79d70ce09df8af345259b7e108e61abe359c76200b76a4fe00"
+  }
+]
