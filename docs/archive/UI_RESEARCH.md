@@ -1,3 +1,5 @@
+> HISTORICAL / SUPERSEDED. This file describes an earlier prototype and may contain incorrect claims. Do not use it as a submission or security specification. See README.md, VERIFY.md, SECURITY.md and SUBMISSION.md at the repository root.
+
 # UI Research Dive — Making Policy Processor Unique & Better Than Seal/Stego/RuleChip
 **Date:** Sep 25, 2026 | **Goal:** Best and unique UI out there for circuit-governed vaults
 

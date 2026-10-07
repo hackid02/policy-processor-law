@@ -1,3 +1,5 @@
+> HISTORICAL / SUPERSEDED. This file describes an earlier prototype and may contain incorrect claims. Do not use it as a submission or security specification. See README.md, VERIFY.md, SECURITY.md and SUBMISSION.md at the repository root.
+
 # DESIGN.md — Policy Processor (LAW)
 **Status:** Draft | **Author:** Policy Processor Team | **Date:** 2026-09-25
 **Hackathon:** Ignix Genesis Transistor Hackathon

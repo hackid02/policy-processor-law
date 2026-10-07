@@ -1,3 +1,5 @@
+> HISTORICAL / SUPERSEDED. This file describes an earlier prototype and may contain incorrect claims. Do not use it as a submission or security specification. See README.md, VERIFY.md, SECURITY.md and SUBMISSION.md at the repository root.
+
 # User Flow Document (UFD) — Policy Processor (LAW)
 **Version:** 1.0 | **Date:** Sep 25, 2026 | **Hackathon:** Ignix Genesis Transistor
 **Principle:** No AI-purple slop. Every state designed: empty, loading, error, success, proof.

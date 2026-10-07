@@ -1,3 +1,5 @@
+> HISTORICAL / SUPERSEDED. This file describes an earlier prototype and may contain incorrect claims. Do not use it as a submission or security specification. See README.md, VERIFY.md, SECURITY.md and SUBMISSION.md at the repository root.
+
 # Blueprint — Policy Processor (LAW) — Anti AI-Purple Slop
 **Two Documents Before Code: Product Blueprint + Technical Blueprint**
 **Version:** 1.0 | **Date:** Sep 25, 2026

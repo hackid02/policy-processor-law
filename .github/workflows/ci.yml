@@ -1,0 +1,23 @@
+name: Verify policy implementation
+on:
+  push:
+  pull_request:
+jobs:
+  local-tests-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            web/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm --prefix web ci
+      - run: npm --prefix web run build
+      - run: npm --prefix web audit --omit=dev
+# Mainnet verification is deliberately a separate read-only command. CI does not
+# require wallet credentials and never broadcasts a transaction.

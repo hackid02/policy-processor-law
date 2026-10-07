@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "passed": [
+    "page loads without runtime errors",
+    "SpendLimit uses local result and correct bit packing",
+    "actual RPC result is rendered separately from local prediction",
+    "input changes invalidate previous verification",
+    "stale async response cannot mark a new input verified",
+    "RPC/local mismatch is shown, not hidden",
+    "malformed RPC result fails closed",
+    "wrong-chain RPC rejected",
+    "offline RPC does not pretend to be live",
+    "Quorum output 1 is labelled PASS",
+    "first 0.90 request denied with 1.00 balance unchanged",
+    "two 0.05 requests allowed; next 0.01 denied",
+    "deposit cannot refill daily allowance",
+    "demo reset clears outflow and events",
+    "legacy vault route redirects to truthful homepage",
+    "legacy misleading static demo is unavailable",
+    "desktop has no horizontal overflow",
+    "mobile has no horizontal overflow"
+  ],
+  "errors": [],
+  "rpc": "mocked for deterministic error and race tests; mainnet verified separately"
+}

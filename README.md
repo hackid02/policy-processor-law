@@ -1,112 +1,83 @@
-# Policy Processor LAW — Circuit-governed Vaults on X Layer
+# Policy Processor (LAW)
 
-**Live Demo:** https://policyprocessor.vercel.app — GitHub: https://github.com/hackid02/policy-processor-law
+**Inspectable Boolean policy circuits on X Layer, with a clearly labelled withdrawal simulator and a tested reference vault adapter.**
 
-**We help vaults enforce withdrawal rules that can't be edited after deployment.**
+- Existing public site: https://policyprocessor.vercel.app/
+- Repository: https://github.com/hackid02/policy-processor-law
+- This revision is a local patch until pushed and deployed. It does not change the existing processor or deploy a new vault.
 
-Before: Config file in GitHub, editable silently, $2M drained.  
-After: Law Card NFT, permanent NAND circuit, free `eval()`, OKLink receipt, bond slashable.
+## What exists
 
-Live on X Layer 196: `0x6F74553bAe997e896AD76BaC27401602A01790E8` — 5 circuits, 50 transistors burned, 68 exhaustive PASS.
+| Component | Status | Evidence |
+|---|---|---|
+| TapeOut processor + five circuit netlists | Existing X Layer mainnet deployment | `reports/mainnet-verification.json` |
+| Factory association, supply cap, mint price, creation/mint/tapeout receipts | Read-only verifier passed at recorded block | Same report; rerun `npm run verify:mainnet` |
+| 68 circuit input cases | Independently checked locally and queried on mainnet at the recorded block | `npm run test:circuits`, verification report |
+| Law Cards | Local model plus explicit, separate RPC verification per input | Web application + browser tests |
+| Courtroom | Browser simulation; no real funds or transactions | Shared integer-wei policy module |
+| Revised `VaultLaw` and `PolicyRegistry` | Tested local reference contracts; NOT deployed by this patch, NOT audited | `npm run test:contracts` |
+| Bonds, slashing, author revenue share, authenticated multisig, coin launch, bounty market | Not implemented | Deliberately not marketed as working features |
 
-## Live Deployment
+## Run and test
 
-- **Factory:** `0x1f09DAeFA827f02CBb40967cc91b259763760761`
-- **Processor:** `0x6F74553bAe997e896AD76BaC27401602A01790E8`
-- **Transistors:** `0xeDDe115d032bE238cd7AA37AEc183262C598a941` — 2.3M cap, 0.000066 OKB, 50/50 burned
-- **Deployer:** `0xb9C37b75cF53EBfeC9eAf16b35E77541aB941556`
-- **Create:** https://www.oklink.com/xlayer/tx/0xa5ff67333838d8471f9434e9a08f93eceb52669b0dcda55e785cb57b29102887
-- **Mint 50:** https://www.oklink.com/xlayer/tx/0xe050bd4537df9601423d1f51b45c77ea8a9abe25b9d73c07bd8b3c5fe9e897f6 (cost `mintPrice*50 + protocolFee 0.00066`)
-- **Tape 1-5:** 0x20a4...2f23, 0x1a1e...2182, 0x600d...001e, 0x38cf...bef7e, 0x8ced...a4fe00
+Node 20.9+ is required (tested with Node 20.20.2). No private key is needed.
 
-## 7 Ways Stack (10/10 Idea)
-
-| ID | Name | Gates | Bytes | 7 Ways |
-|----|------|-------|-------|--------|
-| 1 | SpendLimit | 2 | 14 | Vault Guard — wedge, finance judges love |
-| 2 | Quorum2of3 | 12 | 84 | Permission Seal — 2-of-3 multisig |
-| 3 | MoodASIC | 12 | 84 | Mood — FOMO/FEAR/HOLD/EXIT |
-| 4 | DeadMan | 6 | 42 | Dead Man Switch — heartbeat → lock |
-| 5 | RuleMux | 18 | 126 | RuleMux — SpendLimit+Quorum→Hybrid without re-tape |
-
-Plus TapeID coin (80/20 IGNIX) and Fabrica bounty (smaller circuit wins).
-
-## Quick Start
-
-```bash
-cd web
-npm install
-npm run dev
-# Open http://localhost:3000
+```sh
+npm ci
+npm test
+npm --prefix web ci
+npm --prefix web run build
+npm --prefix web run start
+# http://localhost:3000
 ```
 
-### Wedge Demo (1 click)
+Browser regression suite, with the web server running:
 
-1. **Deposit 1 OKB** → TVL 1.0 → 2.0
-2. **Withdraw 0.9 (over-limit)** → DENY — circuit `ah & dh`, OKLink receipt, Gas0, bond check
-3. **Withdraw 0.05 (under)** → ALLOW — TVL updated
-4. Toggle **Mood** FOMO/FEAR/HOLD/EXIT → verdict changes
-5. **Heartbeat** → DeadMan alive 30s window → LOCKED after timeout
-6. **Quorum** s1/s2/s3 → 2/3 needed
-7. **RuleMux** hybrid = SpendLimit OR !Quorum
-8. **Launch $TOKEN 80/20** → TapeID coin
-
-## Technical 10/10
-
-- **Live eval Gas0:** `processor.eval(id, bitPacked)` view, bit-packed LSB first, 0 gas
-  - SpendLimit [1,1] → `0x03` → `0x01` DENY
-- **Exhaustive:** 68/68 PASS (4+8+16+8+32) — `circuits/*.json` truth tables vs on-chain eval
-- **Foundry fork:** `forge test --fork-url https://rpc.xlayer.tech` — `contracts/test/Fork.t.sol` proves live circuits
-- **TapeKit bytes:** Real `.bin` netlists 14B/84B/84B/42B/126B NAND 7-byte aligned, hex on-chain
-
-```bash
-cast call 0x6F74553bAe997e896AD76BaC27401602A01790E8 "eval(uint256,bytes)" 1 0x03 --rpc-url https://rpc.xlayer.tech
+```sh
+npx playwright install --with-deps chromium
+npm run test:browser
 ```
 
-## UI 10/10
+Read-only mainnet verification:
 
-- **1120px shell**, `#E6E8EB` hairline `rgba(0,0,0,0.06)`, 44px mobile min-height, bottom nav
-- **Glass:** `blur(20px) saturate(180%)` + `rgba(255,255,255,0.72)` + border `rgba(255,255,255,0.6)` + highlight
-- **Cards:** Independent segments `marginBottom`, pills grouped consistent spacing, short (no black line), real values `2 gates·14 bytes`
-- **Boring layer:**
-  - Empty: ∅ No withdrawals yet + Test over/under buttons
-  - Loading: eval() 0.4s spinner
-  - Error: TVL insufficient, DEADMAN LOCKED
-  - Success: ALLOW/DENY + OKLink receipt + Gas0 + bond check
-- **Footer:** Single clean footer — IGNIX/X Layer/TapeOut + Processor/Create + LIVE Gas0 + 68 exhaustive + GitHub
-
-## Circuits
-
-Compiled via `circuits/compiler.mjs` — custom NAND compiler, Circuit class `nIn/nOut/nextIdx=2+nIn`, `encodeNAND`, `truthTable` exhaustive.
-
-```
-SpendLimit: 2 gates, 14 bytes, AND
-Quorum2of3: 12 gates, 84 bytes, majority
-MoodASIC: 12 gates, 84 bytes, 4 inputs
-DeadMan: 6 gates, 42 bytes, 3 inputs
-RuleMux: 18 gates, 126 bytes, 5 inputs
-Total: 50 gates burned
+```sh
+npm run verify:mainnet
+# Optional: XLAYER_RPC_URL=https://... npm run verify:mainnet
 ```
 
-## Comparison
+RPC failure produces a failed verification report and nonzero exit code. It is not replaced by a successful local simulation.
 
-- **Seal:** 8g + 8g only, no vault
-- **Stego:** 112/161/246g heavy, no Mood/DeadMan/RuleMux/TapeID UI
-- **RuleChip:** 72/70/22g game, not finance
-- **Fabrica:** market infra, not product
-- **TapeID:** 21g coin infra
-- **Ours:** Finance wedge + all 7 in 50g minimal
+## The withdrawal specification
 
-## Docs
+The Courtroom begins with a simulated balance of **1.00 OKB** and **zero spent**. Its fixed global budget is **0.10 OKB per UTC calendar day**.
 
-- `docs/suraj-7-ways.md` — 7 ways research + comparison
-- `DEPLOYMENT_LIVE.md` — receipts
-- `SUBMISSION.md` — hackathon form fields
+- A first 0.90 request is denied.
+- A 0.05 request is allowed; another 0.05 is allowed.
+- A following 0.01 request is denied.
+- Depositing more does not refill the daily budget.
+- Exactly the remaining allowance is permitted; one wei above it is not.
+- A UTC date change resets the allowance, not the balance.
 
-## No Naija Branding
+All calculations use integer wei. This is a fixed global limit, not 10% of a changing TVL, not a per-user budget, and not a rolling 24-hour window.
 
-Professional global brand: Policy Processor LAW, Apple Wallet/Linear glass, not purple slop.
+### Where arithmetic happens
 
-## License
+SpendLimit is a **two-input AND circuit**, not a numeric comparator. The reference vault computes `overLimit` from trusted state, then sends `[overLimit, 1]` as the adapter input:
 
-MIT
+- `0x02` → output `0x00` → ALLOW
+- `0x03` → output `0x01` → DENY
+
+The vault also enforces the numeric limit independently. This demonstrates a circuit adapter; it does not claim the circuit performs addition or full numeric policy evaluation. Arbitrary caller-provided risk flags and policy selection have been removed from the withdrawal API.
+
+Quorum, Mood, Heartbeat and RuleMux cards remain separate Boolean demonstrations. They are not authenticated wallet approvals or additional enforcement in the reference daily-limit vault.
+
+## Read the evidence, not a badge
+
+- [Verification commands and scope](VERIFY.md)
+- [Threat model and remaining limitations](SECURITY.md)
+- [Issuance parameters and demand assumptions](ECONOMICS.md)
+- [Corrected hackathon submission](SUBMISSION.md)
+- [Existing deployment references](DEPLOYMENT_LIVE.md)
+- [Publishing and deployment checklist](HANDOFF.md)
+
+Historical notes are in `docs/archive/` and are explicitly superseded. They are not security specifications.
