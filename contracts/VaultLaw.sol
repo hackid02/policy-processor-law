@@ -3,126 +3,116 @@ pragma solidity ^0.8.20;
 
 import "./PolicyRegistry.sol";
 
-/// @title VaultLaw - Circuit-governed vaults on X Layer
-/// @notice Every deposit/withdraw calls processor.eval() on policy circuit. No OKB needed to compile/test.
-
+/// @notice Reference vault with a FIXED GLOBAL limit per UTC calendar day.
+/// @dev NEW, un-audited reference implementation. Not deployed by this patch.
+/// A pinned AND circuit receives bit0=projectedOutflowExceedsLimit, bit1=1.
+/// The vault derives the numeric predicate itself and independently enforces it.
+/// Quorum/Mood/DeadMan playgrounds are NOT wallet authentication in this vault.
 contract VaultLaw {
-    struct Deposit {
-        address user;
-        uint256 amount;
-        uint256 timestamp;
-    }
+    PolicyRegistry public immutable registry;
+    ITapeOutProcessor public immutable processor;
+    uint256 public immutable policyId;
+    uint256 public immutable circuitId;
+    bytes32 public immutable expectedNetlistHash;
+    uint256 public immutable dailyLimit;
 
-    PolicyRegistry public registry;
-    address public processor;
-    address public owner;
-    
     uint256 public tvl;
     uint256 public dailyOutflow;
     uint256 public lastResetDay;
-    uint256 public constant DAILY_LIMIT_BPS = 1000; // 10% = 1000 bps
-    
     mapping(address => uint256) public balances;
-    mapping(address => uint256) public lastWithdrawDay;
-    
-    event Deposit(address indexed user, uint256 amount, uint256 tvl);
-    event Withdraw(address indexed user, uint256 amount, uint256 indexed policyId, bytes inputs, bytes output);
-    event Blocked(address indexed user, uint256 amount, uint256 indexed policyId, bytes inputs, bytes output, string reason);
-    event Throttled(address indexed user, uint256 amount, uint256 fee, uint256 indexed policyId);
+    uint256 private entered = 1;
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "_");
+    error InvalidConfiguration();
+    error InvalidCircuit();
+    error PolicyUnavailable();
+    error NetlistChanged();
+    error InvalidOutput();
+    error DailyLimitExceeded();
+    error CircuitDenied();
+    error ZeroAmount();
+    error InsufficientBalance();
+    error Reentrancy();
+    error TransferFailed();
+
+    event Deposited(address indexed user, uint256 amount, uint256 tvl);
+    event Withdrawn(address indexed user, uint256 amount, uint256 indexed policyId, bytes inputs, bytes output);
+
+    modifier nonReentrant() {
+        if (entered != 1) revert Reentrancy();
+        entered = 2;
         _;
+        entered = 1;
     }
 
-    constructor(address _registry, address _processor) {
-        registry = PolicyRegistry(payable(_registry));
-        processor = _processor;
-        owner = msg.sender;
+    constructor(address registry_, uint256 policyId_, uint256 dailyLimit_) {
+        if (registry_.code.length == 0 || dailyLimit_ == 0) revert InvalidConfiguration();
+        registry = PolicyRegistry(registry_);
+        ITapeOutProcessor proc = registry.processor();
+        PolicyRegistry.Policy memory p = registry.getPolicy(policyId_);
+        if (!p.active) revert InvalidConfiguration();
+        if (keccak256(proc.netlist(p.circuitId)) != p.netlistHash) revert NetlistChanged();
+        // A Quorum circuit uses 1=PASS; it cannot be substituted for a deny circuit.
+        // Validate the pinned circuit's full two-input AND truth table at creation.
+        for (uint8 i = 0; i < 4; i++) {
+            bytes memory output = proc.eval(p.circuitId, abi.encodePacked(i));
+            if (output.length != 1 || uint8(output[0]) != (i == 3 ? 1 : 0)) revert InvalidCircuit();
+        }
+        processor = proc;
+        policyId = policyId_;
+        circuitId = p.circuitId;
+        expectedNetlistHash = p.netlistHash;
+        dailyLimit = dailyLimit_;
         lastResetDay = block.timestamp / 1 days;
     }
 
-    function _resetDailyIfNeeded() internal {
-        uint256 currentDay = block.timestamp / 1 days;
-        if (currentDay > lastResetDay) {
+    function _resetDailyIfNeeded() private {
+        uint256 today = block.timestamp / 1 days;
+        if (today != lastResetDay) {
+            lastResetDay = today;
             dailyOutflow = 0;
-            lastResetDay = currentDay;
         }
     }
 
-    function deposit() external payable {
-        require(msg.value > 0, "0 deposit");
+    function deposit() external payable nonReentrant {
+        if (msg.value == 0) revert ZeroAmount();
         _resetDailyIfNeeded();
         balances[msg.sender] += msg.value;
         tvl += msg.value;
-        emit Deposit(msg.sender, msg.value, tvl);
+        emit Deposited(msg.sender, msg.value, tvl);
     }
 
-    /// @notice Withdraw with policy enforcement via circuit eval
-    /// @param amount Amount to withdraw in wei
-    /// @param policyId Policy to enforce
-    /// @param inputs Encoded inputs for circuit eval (e.g., abi.encode(amount_high, daily_high))
-    function withdraw(uint256 amount, uint256 policyId, bytes calldata inputs) external {
+    /// @notice No caller-selected policy or caller-supplied risk flags.
+    function withdraw(uint256 amount) external nonReentrant {
+        if (amount == 0) revert ZeroAmount();
+        if (balances[msg.sender] < amount) revert InsufficientBalance();
         _resetDailyIfNeeded();
-        require(balances[msg.sender] >= amount, "insufficient balance");
-        require(amount > 0, "0 withdraw");
-        
-        // Get policy
-        PolicyRegistry.Policy memory policy = registry.getPolicy(policyId);
-        require(policy.active, "policy inactive");
-        
-        // Call processor.eval() - THE CORE INTEGRATION
-        // This is free, read-only, 0.4s on X Layer
-        bytes memory output = ITapeOutProcessor(processor).eval(policy.circuitId, inputs);
-        
-        // Decode output - MVP: 0=ALLOW, 1=DENY, 2=THROTTLE (for full 8-bit version)
-        uint8 verdict = output.length > 0 ? uint8(output[0]) : 0;
-        
-        if (verdict == 1) {
-            // DENY - block withdrawal
-            emit Blocked(msg.sender, amount, policyId, inputs, output, "SpendLimit: daily limit exceeded");
-            revert("VaultLaw: DENY by circuit");
-        } else if (verdict == 2) {
-            // THROTTLE - charge 1% fee to LPs
-            uint256 fee = amount / 100;
-            uint256 net = amount - fee;
-            balances[msg.sender] -= amount;
-            tvl -= amount;
-            dailyOutflow += amount;
-            (bool ok, ) = msg.sender.call{value: net}("");
-            require(ok, "transfer failed");
-            // Fee stays in vault for LPs
-            tvl += fee;
-            emit Throttled(msg.sender, amount, fee, policyId);
-            emit Withdraw(msg.sender, net, policyId, inputs, output);
-        } else {
-            // ALLOW - proceed
-            // Check daily limit (additional off-chain safety, circuit is primary)
-            uint256 limit = tvl * DAILY_LIMIT_BPS / 10000;
-            if (dailyOutflow + amount > limit) {
-                // Even if circuit says ALLOW, enforce daily limit as backup
-                // In full version, circuit itself encodes this logic
-                emit Blocked(msg.sender, amount, policyId, inputs, output, "Daily limit exceeded");
-                revert("VaultLaw: daily limit");
-            }
-            
-            balances[msg.sender] -= amount;
-            tvl -= amount;
-            dailyOutflow += amount;
-            (bool ok, ) = msg.sender.call{value: amount}("");
-            require(ok, "transfer failed");
-            emit Withdraw(msg.sender, amount, policyId, inputs, output);
-        }
-    }
+        PolicyRegistry.Policy memory p = registry.getPolicy(policyId);
+        if (!p.active || p.circuitId != circuitId || p.netlistHash != expectedNetlistHash) revert PolicyUnavailable();
+        if (keccak256(processor.netlist(circuitId)) != expectedNetlistHash) revert NetlistChanged();
 
-    // View helpers
-    function getDailyLimit() external view returns (uint256) {
-        return tvl * DAILY_LIMIT_BPS / 10000;
+        // Avoid overflow in projected sum, with the exact boundary permitted.
+        bool overLimit = amount > dailyLimit || dailyOutflow > dailyLimit - amount;
+        bytes memory input = abi.encodePacked(uint8(overLimit ? 3 : 2));
+        bytes memory output = processor.eval(circuitId, input);
+        // Reverting eval calls propagate. No local-success fallback or empty=ALLOW.
+        if (output.length != 1 || uint8(output[0]) > 1) revert InvalidOutput();
+        // Defense in depth: an upgraded or malfunctioning processor cannot approve
+        // a request that exceeds this vault's fixed daily budget.
+        if (overLimit) revert DailyLimitExceeded();
+        if (uint8(output[0]) == 1) revert CircuitDenied();
+
+        balances[msg.sender] -= amount;
+        tvl -= amount;
+        dailyOutflow += amount;
+        (bool ok,) = msg.sender.call{value: amount}("");
+        if (!ok) revert TransferFailed();
+        emit Withdrawn(msg.sender, amount, policyId, input, output);
+        // Denied transactions revert: their logs do not persist. No Blocked
+        // event is advertised as a receipt for a failed withdrawal.
     }
 
     function getRemainingDaily() external view returns (uint256) {
-        uint256 limit = tvl * DAILY_LIMIT_BPS / 10000;
-        if (dailyOutflow >= limit) return 0;
-        return limit - dailyOutflow;
+        uint256 spent = block.timestamp / 1 days == lastResetDay ? dailyOutflow : 0;
+        return spent >= dailyLimit ? 0 : dailyLimit - spent;
     }
 }

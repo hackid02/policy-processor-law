@@ -1,3 +1,5 @@
+> HISTORICAL / SUPERSEDED. This file describes an earlier prototype and may contain incorrect claims. Do not use it as a submission or security specification. See README.md, VERIFY.md, SECURITY.md and SUBMISSION.md at the repository root.
+
 # UI Winning V2 — Simple Top-Tier, Not Complex, Good Enough to Win
 **Inspiration from research, not copy-paste. Goal: Win judges in 90s.**
 

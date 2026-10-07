@@ -1,0 +1,5 @@
+{
+  "result": "RPC returned ALLOW (0). Matches local model.",
+  "transport": "actual public RPC, no interception",
+  "checkedAt": "2026-10-07T01:20:16.423Z"
+}

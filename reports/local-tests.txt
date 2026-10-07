@@ -1,0 +1,302 @@
+
+> policy-processor-verification@2.0.0 test
+> npm run test:circuits && npm run test:policy && npm run test:contracts
+
+
+> policy-processor-verification@2.0.0 test:circuits
+> node --test tests/circuits.test.mjs
+
+TAP version 13
+# Subtest: SpendLimit: every encoded input matches independent formula and stored table
+ok 1 - SpendLimit: every encoded input matches independent formula and stored table
+  ---
+  duration_ms: 2.402586
+  ...
+# Subtest: Quorum2of3: every encoded input matches independent formula and stored table
+ok 2 - Quorum2of3: every encoded input matches independent formula and stored table
+  ---
+  duration_ms: 0.530364
+  ...
+# Subtest: MoodASIC: every encoded input matches independent formula and stored table
+ok 3 - MoodASIC: every encoded input matches independent formula and stored table
+  ---
+  duration_ms: 1.976713
+  ...
+# Subtest: DeadMan: every encoded input matches independent formula and stored table
+ok 4 - DeadMan: every encoded input matches independent formula and stored table
+  ---
+  duration_ms: 0.533807
+  ...
+# Subtest: RuleMux: every encoded input matches independent formula and stored table
+ok 5 - RuleMux: every encoded input matches independent formula and stored table
+  ---
+  duration_ms: 0.858358
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 71.741704
+
+> policy-processor-verification@2.0.0 test:policy
+> tsx --test tests/policy.test.ts
+
+TAP version 13
+# Subtest: fresh demo starts with 1 OKB and zero outflow
+ok 1 - fresh demo starts with 1 OKB and zero outflow
+  ---
+  duration_ms: 0.650697
+  ...
+# Subtest: 0.90 is denied on the FIRST request
+ok 2 - 0.90 is denied on the FIRST request
+  ---
+  duration_ms: 0.385559
+  ...
+# Subtest: 0.05 twice allowed, 0.01 thereafter denied, exact integers
+ok 3 - 0.05 twice allowed, 0.01 thereafter denied, exact integers
+  ---
+  duration_ms: 0.125525
+  ...
+# Subtest: one wei above remaining budget is denied
+ok 4 - one wei above remaining budget is denied
+  ---
+  duration_ms: 0.088951
+  ...
+# Subtest: exact daily boundary is allowed
+ok 5 - exact daily boundary is allowed
+  ---
+  duration_ms: 0.140601
+  ...
+# Subtest: zero and negative requests rejected
+ok 6 - zero and negative requests rejected
+  ---
+  duration_ms: 0.083803
+  ...
+# Subtest: insufficient funds rejected
+ok 7 - insufficient funds rejected
+  ---
+  duration_ms: 0.234807
+  ...
+# Subtest: deposit increases balance but not budget or spent amount
+ok 8 - deposit increases balance but not budget or spent amount
+  ---
+  duration_ms: 0.11538
+  ...
+# Subtest: UTC date change resets spent without changing balance
+ok 9 - UTC date change resets spent without changing balance
+  ---
+  duration_ms: 0.149153
+  ...
+# Subtest: 23:59:59 to 00:00:00 UTC is the reset boundary
+ok 10 - 23:59:59 to 00:00:00 UTC is the reset boundary
+  ---
+  duration_ms: 0.27429
+  ...
+# Subtest: all four SpendLimit combinations and packed bytes
+ok 11 - all four SpendLimit combinations and packed bytes
+  ---
+  duration_ms: 1.057292
+  ...
+# Subtest: all eight quorum combinations: output 1 is PASS
+ok 12 - all eight quorum combinations: output 1 is PASS
+  ---
+  duration_ms: 0.223634
+  ...
+# Subtest: FEAR and HOLD match deployed circuit AND behavior
+ok 13 - FEAR and HOLD match deployed circuit AND behavior
+  ---
+  duration_ms: 0.099806
+  ...
+# Subtest: FOMO allows, EXIT denies in every spend state
+ok 14 - FOMO allows, EXIT denies in every spend state
+  ---
+  duration_ms: 0.141559
+  ...
+# Subtest: heartbeat dead bit denies independently of spend
+ok 15 - heartbeat dead bit denies independently of spend
+  ---
+  duration_ms: 0.099605
+  ...
+# Subtest: hybrid denies on quorum fail or AND restriction
+ok 16 - hybrid denies on quorum fail or AND restriction
+  ---
+  duration_ms: 0.11614
+  ...
+# Subtest: malformed RPC output is an error, never success
+ok 17 - malformed RPC output is an error, never success
+  ---
+  duration_ms: 0.20191
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 200.624303
+
+> policy-processor-verification@2.0.0 test:contracts
+> node --test tests/contracts.test.mjs
+
+TAP version 13
+# Subtest: reference contracts compile and execute on a local EVM (NOT mainnet)
+    # Subtest: first 0.90 request is denied with no accounting change
+    ok 1 - first 0.90 request is denied with no accounting change
+      ---
+      duration_ms: 161.46484
+      ...
+    # Subtest: 0.05 + 0.05 allowed, next 0.01 denied; input fixed to 0x02
+    ok 2 - 0.05 + 0.05 allowed, next 0.01 denied; input fixed to 0x02
+      ---
+      duration_ms: 99.579122
+      ...
+    # Subtest: exact limit allowed, then one wei denied
+    ok 3 - exact limit allowed, then one wei denied
+      ---
+      duration_ms: 72.025667
+      ...
+    # Subtest: zero deposit and withdrawal rejected
+    ok 4 - zero deposit and withdrawal rejected
+      ---
+      duration_ms: 63.77208
+      ...
+    # Subtest: cannot withdraw another user balance
+    ok 5 - cannot withdraw another user balance
+      ---
+      duration_ms: 61.641919
+      ...
+    # Subtest: budget is GLOBAL across users
+    ok 6 - budget is GLOBAL across users
+      ---
+      duration_ms: 87.571792
+      ...
+    # Subtest: deposit does not increase or reset daily budget
+    ok 7 - deposit does not increase or reset daily budget
+      ---
+      duration_ms: 77.380846
+      ...
+    # Subtest: next UTC day resets budget, including view helper
+    ok 8 - next UTC day resets budget, including view helper
+      ---
+      duration_ms: 83.947243
+      ...
+    # Subtest: empty response fails closed
+    ok 9 - empty response fails closed
+      ---
+      duration_ms: 78.093011
+      ...
+    # Subtest: multi-byte response fails closed
+    ok 10 - multi-byte response fails closed
+      ---
+      duration_ms: 73.159175
+      ...
+    # Subtest: out-of-range response fails closed
+    ok 11 - out-of-range response fails closed
+      ---
+      duration_ms: 78.43668
+      ...
+    # Subtest: reverting eval response fails closed
+    ok 12 - reverting eval response fails closed
+      ---
+      duration_ms: 78.217175
+      ...
+    # Subtest: reverting netlist response fails closed
+    ok 13 - reverting netlist response fails closed
+      ---
+      duration_ms: 77.326158
+      ...
+    # Subtest: malicious always-ALLOW processor cannot bypass numeric budget
+    ok 14 - malicious always-ALLOW processor cannot bypass numeric budget
+      ---
+      duration_ms: 68.750853
+      ...
+    # Subtest: DENY blocks a numerically valid request
+    ok 15 - DENY blocks a numerically valid request
+      ---
+      duration_ms: 63.280012
+      ...
+    # Subtest: caller cannot supply a different policy or input bytes
+    ok 16 - caller cannot supply a different policy or input bytes
+      ---
+      duration_ms: 67.602826
+      ...
+    # Subtest: netlist change blocks withdrawal before public report
+    ok 17 - netlist change blocks withdrawal before public report
+      ---
+      duration_ms: 72.272604
+      ...
+    # Subtest: false tamper report cannot deactivate policy
+    ok 18 - false tamper report cannot deactivate policy
+      ---
+      duration_ms: 62.172559
+      ...
+    # Subtest: forged expected-hash API is not exposed
+    ok 19 - forged expected-hash API is not exposed
+      ---
+      duration_ms: 80.020962
+      ...
+    # Subtest: real hash mismatch can be reported permissionlessly
+    ok 20 - real hash mismatch can be reported permissionlessly
+      ---
+      duration_ms: 84.091793
+      ...
+    # Subtest: unknown policy ids are rejected
+    ok 21 - unknown policy ids are rejected
+      ---
+      duration_ms: 59.925934
+      ...
+    # Subtest: unauthorized registration and disable rejected
+    ok 22 - unauthorized registration and disable rejected
+      ---
+      duration_ms: 58.231407
+      ...
+    # Subtest: explicit admin disable stops withdrawal and cannot be undone
+    ok 23 - explicit admin disable stops withdrawal and cannot be undone
+      ---
+      duration_ms: 73.834866
+      ...
+    # Subtest: unverified slash API removed
+    ok 24 - unverified slash API removed
+      ---
+      duration_ms: 60.17642
+      ...
+    # Subtest: registration rejects empty netlists and names
+    ok 25 - registration rejects empty netlists and names
+      ---
+      duration_ms: 69.328831
+      ...
+    # Subtest: bad constructor configuration rejected
+    ok 26 - bad constructor configuration rejected
+      ---
+      duration_ms: 78.08091
+      ...
+    # Subtest: transfer failure rolls back balances and daily outflow
+    ok 27 - transfer failure rolls back balances and daily outflow
+      ---
+      duration_ms: 80.590327
+      ...
+    # Subtest: reentrant withdrawal cannot execute a second transfer
+    ok 28 - reentrant withdrawal cannot execute a second transfer
+      ---
+      duration_ms: 93.937113
+      ...
+    1..28
+ok 1 - reference contracts compile and execute on a local EVM (NOT mainnet)
+  ---
+  duration_ms: 2170.291507
+  ...
+1..1
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4031.239372

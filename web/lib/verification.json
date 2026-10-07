@@ -1,0 +1,8 @@
+{
+  "status": "VERIFIED_AT_RECORDED_BLOCK",
+  "checkedAt": "2026-10-07T01:10:43.396Z",
+  "blockNumber": 72566407,
+  "blockHash": "0x017e144f00758410aa7ec29700ef5f60aefddb494a35968841df1f39de23f6fe",
+  "cases": 68,
+  "receipts": 7
+}

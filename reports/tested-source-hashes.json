@@ -1,0 +1,20 @@
+{
+  "contracts/PolicyRegistry.sol": "a0bbf42983246c5a7d8a21ede664b29741efca6798bd5a6c38f9cb5b0d4d9e29",
+  "contracts/VaultLaw.sol": "ea90443866aa5e8ed5beb27ad9998504ff48cd107160eaef128661cb15d03bca",
+  "package-lock.json": "33c23688c1d8038a2e6bc1b9c57091d6715bb48f8cb91634d824e557f2ffcd48",
+  "package.json": "e36c5d89d7cf9baa532ab2ed7ceb542005d5db91fa7c4ad90b1fe85e0aac1f51",
+  "tests/Fixtures.sol": "e67a80cd73baf812a271144493ab8581a93b403057290bbe3ec9a1ae619a44df",
+  "tests/browser.mjs": "040425c3498feffc15c86177aab932efb0975af84a4ad82b8869966746e480a7",
+  "tests/circuits.test.mjs": "cae0bd917f121f001b76db58c5a02642ea8809dace4945bc05ddf8ac047e19db",
+  "tests/contracts.test.mjs": "8e8704df569f47dedef93563629486b9b6b1bfabf6a676771ba4b22b6313ca08",
+  "tests/policy.test.ts": "ab9895d54b9252d608d317c3d6eb9e7e8b71efa57002f50231a043f8b8f53763",
+  "web/app/globals.css": "7825ffe0b765234ba81c5bbe77305512cb6039067144930fa11814a3161c372e",
+  "web/app/layout.tsx": "0d5d76e0e6bd26f70e4e7bbf3ad7230d2e7a52355a56a4b2bdf95b9524024df2",
+  "web/app/page.tsx": "4985e3f1f58b2b9303272ebea35dfe95336ff8d828c85c6bd80b40ec48c55e74",
+  "web/lib/deployment.ts": "40ea8fd1ff330ac8143ce6e617b141364aa0d93a082ac3af353c97405bd0ed95",
+  "web/lib/policy.ts": "ce820bf34027aad87eed862b4afba9e1294d79938bcdf916990e280b95dcf048",
+  "web/lib/verification.json": "9b3bc817ce8901c3a4305cde0e4363eb31abcac96a50131dafd9790780c84185",
+  "web/next.config.js": "133d983708d0d115d0a955fcfbc09b6f5d8b03695731c7e7625e5d4772096615",
+  "web/package-lock.json": "30beeac56a2fce957adaabfbef7ea6d4b225c2b8da60fc1788b0915384a705c1",
+  "web/package.json": "e986e79ae618760ce8c6c3752b4ab953cdd318cddda3a3083aa94028ccf2d8e7"
+}

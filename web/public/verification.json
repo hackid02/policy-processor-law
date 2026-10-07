@@ -1,0 +1,297 @@
+{
+  "checkedAt": "2026-10-07T01:10:43.396Z",
+  "mode": "read-only",
+  "status": "VERIFIED_AT_RECORDED_BLOCK",
+  "addresses": {
+    "factory": "0x1f09DAeFA827f02CBb40967cc91b259763760761",
+    "processor": "0x6F74553bAe997e896AD76BaC27401602A01790E8",
+    "transistors": "0xeDDe115d032bE238cd7AA37AEc183262C598a941",
+    "deployer": "0xb9C37b75cF53EBfeC9eAf16b35E77541aB941556"
+  },
+  "checks": [
+    {
+      "name": "X Layer chain ID",
+      "passed": true,
+      "details": 196
+    },
+    {
+      "name": "factory bytecode exists",
+      "passed": true,
+      "details": {
+        "codeHash": "0x5cddc08137fc81eb8ba1d37902e77553152c2f639b6bf6f601ecb094e2cae5c8"
+      }
+    },
+    {
+      "name": "processor bytecode exists",
+      "passed": true,
+      "details": {
+        "codeHash": "0x57aa306fd0be97087da3534e03398f5ff4efd533b5be4e45a405ce86fa6717d5"
+      }
+    },
+    {
+      "name": "transistors bytecode exists",
+      "passed": true,
+      "details": {
+        "codeHash": "0x393e8ae4a91482c3c172adb22b95a659007edd781d2125ed01bd0f0d701ed436"
+      }
+    },
+    {
+      "name": "factory recognises processor",
+      "passed": true
+    },
+    {
+      "name": "processor points to declared transistor contract",
+      "passed": true
+    },
+    {
+      "name": "supply cap matches disclosure",
+      "passed": true,
+      "details": "2300000"
+    },
+    {
+      "name": "unit price matches disclosure",
+      "passed": true,
+      "details": "66000000000000"
+    },
+    {
+      "name": "SpendLimit metadata",
+      "passed": true,
+      "details": [
+        "2",
+        "1",
+        "0",
+        "2"
+      ]
+    },
+    {
+      "name": "SpendLimit netlist matches local bytes",
+      "passed": true,
+      "details": {
+        "hash": "0x20af4e3adea53490414d22666f3b23fd7bd084cfaf75ba0ba63b776a0135b66b"
+      }
+    },
+    {
+      "name": "Quorum2of3 metadata",
+      "passed": true,
+      "details": [
+        "3",
+        "1",
+        "0",
+        "12"
+      ]
+    },
+    {
+      "name": "Quorum2of3 netlist matches local bytes",
+      "passed": true,
+      "details": {
+        "hash": "0xc09eb6a3d6c6d848ec77da26bd63db291d9919398f147411d93b0995c33b76a4"
+      }
+    },
+    {
+      "name": "MoodASIC metadata",
+      "passed": true,
+      "details": [
+        "4",
+        "1",
+        "0",
+        "12"
+      ]
+    },
+    {
+      "name": "MoodASIC netlist matches local bytes",
+      "passed": true,
+      "details": {
+        "hash": "0xe25a6c923ce3f6b54bd636856b31b2c3044978353b5cac50b2df895f823ff4d1"
+      }
+    },
+    {
+      "name": "DeadMan metadata",
+      "passed": true,
+      "details": [
+        "3",
+        "1",
+        "0",
+        "6"
+      ]
+    },
+    {
+      "name": "DeadMan netlist matches local bytes",
+      "passed": true,
+      "details": {
+        "hash": "0xa47be8dce447ecba3d45b608adf4c86da28fc6b3f24ec222af8e15c4d5e29d62"
+      }
+    },
+    {
+      "name": "RuleMux metadata",
+      "passed": true,
+      "details": [
+        "5",
+        "1",
+        "0",
+        "18"
+      ]
+    },
+    {
+      "name": "RuleMux netlist matches local bytes",
+      "passed": true,
+      "details": {
+        "hash": "0x612c7bce3926b83c1c7bf853d8e3c44bb132c81c4ffb6fe0a12a158fdafb2369"
+      }
+    },
+    {
+      "name": "all 68 mainnet evaluations matched",
+      "passed": true,
+      "details": 68
+    },
+    {
+      "name": "create successful, correct sender and target",
+      "passed": true
+    },
+    {
+      "name": "create within hackathon window",
+      "passed": true,
+      "details": 1790701107
+    },
+    {
+      "name": "mint successful, correct sender and target",
+      "passed": true
+    },
+    {
+      "name": "mint within hackathon window",
+      "passed": true,
+      "details": 1790701788
+    },
+    {
+      "name": "tape1 successful, correct sender and target",
+      "passed": true
+    },
+    {
+      "name": "tape1 within hackathon window",
+      "passed": true,
+      "details": 1790701799
+    },
+    {
+      "name": "tape2 successful, correct sender and target",
+      "passed": true
+    },
+    {
+      "name": "tape2 within hackathon window",
+      "passed": true,
+      "details": 1790701802
+    },
+    {
+      "name": "tape3 successful, correct sender and target",
+      "passed": true
+    },
+    {
+      "name": "tape3 within hackathon window",
+      "passed": true,
+      "details": 1790701806
+    },
+    {
+      "name": "tape4 successful, correct sender and target",
+      "passed": true
+    },
+    {
+      "name": "tape4 within hackathon window",
+      "passed": true,
+      "details": 1790701810
+    },
+    {
+      "name": "tape5 successful, correct sender and target",
+      "passed": true
+    },
+    {
+      "name": "tape5 within hackathon window",
+      "passed": true,
+      "details": 1790701813
+    },
+    {
+      "name": "issuance parameters present at creation",
+      "passed": true
+    }
+  ],
+  "circuits": [
+    {
+      "id": 1,
+      "name": "SpendLimit",
+      "cases": 4
+    },
+    {
+      "id": 2,
+      "name": "Quorum2of3",
+      "cases": 8
+    },
+    {
+      "id": 3,
+      "name": "MoodASIC",
+      "cases": 16
+    },
+    {
+      "id": 4,
+      "name": "DeadMan",
+      "cases": 8
+    },
+    {
+      "id": 5,
+      "name": "RuleMux",
+      "cases": 32
+    }
+  ],
+  "receipts": [
+    {
+      "action": "create",
+      "hash": "0xa5ff67333838d8471f9434e9a08f93eceb52669b0dcda55e785cb57b29102887",
+      "block": 71932071,
+      "timestamp": 1790701107,
+      "status": 1
+    },
+    {
+      "action": "mint",
+      "hash": "0xe050bd4537df9601423d1f51b45c77ea8a9abe25b9d73c07bd8b3c5fe9e897f6",
+      "block": 71932752,
+      "timestamp": 1790701788,
+      "status": 1
+    },
+    {
+      "action": "tape1",
+      "hash": "0x20a48fd1d622861333360d0e900bbfe468ac751d2525dc5844284dd568132f23",
+      "block": 71932763,
+      "timestamp": 1790701799,
+      "status": 1
+    },
+    {
+      "action": "tape2",
+      "hash": "0x1a1e27a6f6ff3f4a10991b16e4267ee3fbfb93bdc1e3ea4d3e7d42f18c0c2182",
+      "block": 71932766,
+      "timestamp": 1790701802,
+      "status": 1
+    },
+    {
+      "action": "tape3",
+      "hash": "0x600d8ce1be00ac04475dcdefab8e36388778b3c083f1bd920ed85c469805001e",
+      "block": 71932770,
+      "timestamp": 1790701806,
+      "status": 1
+    },
+    {
+      "action": "tape4",
+      "hash": "0x38cf6263380007e20b5b1e6bbf60c0d4af3566d1b09e9489f23f1fd9261bef7e",
+      "block": 71932774,
+      "timestamp": 1790701810,
+      "status": 1
+    },
+    {
+      "action": "tape5",
+      "hash": "0x8cedca9b582dab79d70ce09df8af345259b7e108e61abe359c76200b76a4fe00",
+      "block": 71932777,
+      "timestamp": 1790701813,
+      "status": 1
+    }
+  ],
+  "errors": [],
+  "blockNumber": 72566407,
+  "blockHash": "0x017e144f00758410aa7ec29700ef5f60aefddb494a35968841df1f39de23f6fe",
+  "blockTimestamp": 1791335443,
+  "totalMinted": "50"
+}

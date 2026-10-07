@@ -1,3 +1,5 @@
+> HISTORICAL / SUPERSEDED. This file describes an earlier prototype and may contain incorrect claims. Do not use it as a submission or security specification. See README.md, VERIFY.md, SECURITY.md and SUBMISSION.md at the repository root.
+
 # Claude AI — Full Audit & Stress Test Pack for Policy Processor LAW
 
 Copy everything below and give to Claude. Include these files as attachments.

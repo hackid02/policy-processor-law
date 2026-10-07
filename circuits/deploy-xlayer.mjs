@@ -52,15 +52,15 @@ const circuitsToDeploy = [
 
 async function main() {
   const pk = process.env.PRIVATE_KEY;
-  if (!pk) {
-    console.log("No PRIVATE_KEY set - DRY RUN mode, showing netlists only");
+  if (!pk || !process.argv.includes('--broadcast') || !process.argv.includes('--acknowledge-mainnet-costs')) {
+    console.log("DRY RUN. Broadcasting requires a private key AND --broadcast --acknowledge-mainnet-costs.");
     for (const c of circuitsToDeploy) {
       const bytes = fs.readFileSync(c.file);
       console.log(`${c.name}: ${bytes.length} bytes, ${c.gates} gates, nIn=${c.nIn} nOut=${c.nOut}, hex=0x${bytes.toString('hex').slice(0,64)}...`);
     }
     console.log("\nTo deploy on X Layer:");
     console.log("1. Get OKB from https://www.okx.com/xlayer/faucet or bridge");
-    console.log("2. Set PRIVATE_KEY=0x... and run: node deploy-xlayer.mjs");
+    console.log("2. Use a secure local environment; explicit broadcast flags are required. Never paste keys in chat.");
     console.log("3. Factory 0x1f09... will create Processor with 2.3M supply @ 0.000066 OKB");
     console.log("4. Mint requires mintPrice*n + protocolFee (0.00066 OKB per batch)");
     return;
@@ -90,7 +90,7 @@ async function main() {
       address: FACTORY,
       abi: FACTORY_ABI,
       functionName: "createCPU",
-      args: ["Policy Processor", "LAW", "Circuit-governed vaults: SpendLimit + Quorum + Mood + DeadMan + RuleMux + TapeID coin 80/20 - 2.3M cap 0.000066 OKB - 7 Ways Stack", supply, mintPrice],
+      args: ["Policy Processor", "LAW", "Inspectable Boolean policy circuits. 2.3M transistor cap, 0.000066 OKB unit mint price plus fees. Vault integration is a prototype; no collateral, yield, or security guarantee.", supply, mintPrice],
       value: deployFee,
       account,
     });

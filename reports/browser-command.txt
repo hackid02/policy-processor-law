@@ -1,0 +1,22 @@
+
+> policy-processor-verification@2.0.0 test:browser
+> node tests/browser.mjs
+
+PASS page loads without runtime errors
+PASS SpendLimit uses local result and correct bit packing
+PASS actual RPC result is rendered separately from local prediction
+PASS input changes invalidate previous verification
+PASS stale async response cannot mark a new input verified
+PASS RPC/local mismatch is shown, not hidden
+PASS malformed RPC result fails closed
+PASS wrong-chain RPC rejected
+PASS offline RPC does not pretend to be live
+PASS Quorum output 1 is labelled PASS
+PASS first 0.90 request denied with 1.00 balance unchanged
+PASS two 0.05 requests allowed; next 0.01 denied
+PASS deposit cannot refill daily allowance
+PASS demo reset clears outflow and events
+PASS legacy vault route redirects to truthful homepage
+PASS legacy misleading static demo is unavailable
+PASS desktop has no horizontal overflow
+PASS mobile has no horizontal overflow
