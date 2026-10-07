@@ -9,7 +9,8 @@
     "test:policy": "tsx --test tests/policy.test.ts",
     "test:contracts": "node --test tests/contracts.test.mjs",
     "verify:mainnet": "node scripts/verify-mainnet.mjs",
-    "test:browser": "node tests/browser.mjs"
+    "test:browser": "node tests/browser.mjs",
+    "test:ui": "node scripts/run-ui-tests.mjs"
   },
   "devDependencies": {
     "@foundry-rs/anvil": "1.7.1",
