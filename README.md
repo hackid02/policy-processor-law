@@ -4,7 +4,7 @@
 
 - Existing public site: https://policyprocessor.vercel.app/
 - Repository: https://github.com/hackid02/policy-processor-law
-- This revision is a local patch until pushed and deployed. It does not change the existing processor or deploy a new vault.
+- The corrected frontend was published to GitHub and Vercel on 2026-10-07. It does not change the existing processor or deploy a new vault. See PUBLISHED.md.
 
 ## What exists
 

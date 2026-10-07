@@ -2,7 +2,7 @@
 
 ## What this patch does NOT do
 
-It does not push to GitHub, change your Vercel deployment, deploy or upgrade any contract, mint tokens, move funds, register your hackathon entry, or assert an independent audit. The public URL remains the old build until you publish this patch.
+The frontend has now been published to GitHub and Vercel. See PUBLISHED.md. This work did not deploy or upgrade any contract, mint tokens, move funds, register your hackathon entry, or provide an independent audit. The steps below are retained for future updates.
 
 The existing mainnet processor does not need to be redeployed to run the corrected playground or Courtroom simulation. Do not spend the remaining wallet balance just to apply a frontend fix.
 

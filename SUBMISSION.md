@@ -16,8 +16,8 @@ The Courtroom demonstrates a precisely specified fixed daily withdrawal budget u
 - **Deployment wallet:** `0xb9C37b75cF53EBfeC9eAf16b35E77541aB941556`
 - **Supply cap:** 2,300,000.
 - **Unit mint price:** 0.000066 OKB, with other fees additional.
-- **Website:** https://policyprocessor.vercel.app/ — publish this patch before describing it as the corrected version.
-- **Source:** https://github.com/hackid02/policy-processor-law — push this patch and record the submitted commit.
+- **Website:** https://policyprocessor.vercel.app/ — corrected frontend published on 2026-10-07.
+- **Source:** https://github.com/hackid02/policy-processor-law — corrected implementation merged through pull request #1. Record the final submitted commit.
 - **Video:** attach an updated capture of the corrected flow. The earlier 3:45 film shows the previous prototype and its threshold mismatch; it is not proof of this patch's behavior.
 
 ## Demonstration order
@@ -59,7 +59,7 @@ Total: 50 gates, 68 input combinations. This count is not a claim of 68 differen
 
 ## Before submitting
 
-- [ ] Publish and verify the corrected website and source commit.
+- [x] Publish and verify the corrected website and source commit.
 - [ ] Re-run local, browser, and mainnet checks against the submitted revision.
 - [ ] Attach the appropriate updated video or a short correction clip, clearly identifying which build is shown.
 - [ ] Confirm required fields in the actual organizer's submission flow; this Markdown file is not submission confirmation.

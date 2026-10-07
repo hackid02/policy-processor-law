@@ -2,7 +2,7 @@
 
 ## Status
 
-**Implemented and tested locally. Not pushed to GitHub, not deployed to Vercel, and no new contracts deployed.** The running preview shows the revised build. Existing mainnet manufacturing contracts were queried read-only; no funds, tokens or account permissions were changed.
+**Frontend published to GitHub and Vercel on 2026-10-07. No new contracts deployed.** The public site now shows the corrected build; see PUBLISHED.md. Existing mainnet manufacturing contracts were queried read-only; no funds, tokens or account permissions were changed.
 
 ## Fixed
 
@@ -36,10 +36,10 @@ See reports/ and VERIFY.md for details. No independent contract audit, full upst
 
 The report records block **72566407**, hash `0x017e144f00758410aa7ec29700ef5f60aefddb494a35968841df1f39de23f6fe`, checked at `2026-10-07T01:10:43.396Z`. This is a snapshot, not continuous monitoring. The site's `/verification.json` exposes the same snapshot. Read-only verification does not create withdrawal receipts.
 
-## What you need to do next
+## Publication and remaining steps
 
-1. Review the patch and publish it through your authenticated GitHub workflow.
-2. Deploy `web` to a Vercel preview, then run the smoke test in HANDOFF.md before promoting it.
+1. Completed: reviewed changes published through pull request #1 and merged to main.
+2. Completed: Vercel production deployment tested before promotion; public-site browser checks passed.
 3. Update the demo/submission to show the corrected build. A short **silent** corrected-flow recording is supplied in `reports/corrected-flow.mp4`; the earlier long-form video shows the prior implementation.
 4. Submit using the corrected SUBMISSION.md, with actual confirmation from the organizer.
 
