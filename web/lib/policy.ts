@@ -61,5 +61,17 @@ export function withdrawDemo(state: VaultState, amount: bigint, ms: number) {
   return { state: { ...s, balance: s.balance - amount, dailyOutflow: s.dailyOutflow + amount }, allowed: true, reason: 'Within daily limit', packed };
 }
 export function formatOKB(v: bigint) {
-  return `${v / WEI}.${((v % WEI) / (WEI / 100n)).toString().padStart(2, '0')}`;
+  const fractional = (v % WEI).toString().padStart(18, '0').replace(/0+$/, '').padEnd(2, '0');
+  return `${v / WEI}.${fractional}`;
+}
+
+// Decimal text only. Never parse user balances through floating point.
+export function parseScenarioAmount(text: string): bigint {
+  const value = text.trim();
+  if (value.length > 80 || !/^(0|[1-9][0-9]*)(\.[0-9]{1,18})?$/.test(value)) throw new Error('Enter a positive decimal amount with up to 18 decimal places.');
+  const [whole, fraction = ''] = value.split('.');
+  const amount = BigInt(whole) * WEI + BigInt(fraction.padEnd(18, '0'));
+  if (amount <= 0n) throw new Error('Amount must be greater than zero.');
+  if (amount > (1n << 256n) - 1n) throw new Error('Amount exceeds the supported uint256 range.');
+  return amount;
 }

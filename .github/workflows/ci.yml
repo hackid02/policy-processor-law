@@ -19,5 +19,7 @@ jobs:
       - run: npm --prefix web ci
       - run: npm --prefix web run build
       - run: npm --prefix web audit --omit=dev
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:ui
 # Mainnet verification is deliberately a separate read-only command. CI does not
 # require wallet credentials and never broadcasts a transaction.

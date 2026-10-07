@@ -1,3 +1,4 @@
+async function request(amount){await page.getByLabel('Withdrawal amount').fill(amount);await page.getByRole('button',{name:/Evaluate scenario/}).click();}
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -49,7 +50,7 @@ try {
   assert.equal(await page.locator('.law-book').evaluate(e=>getComputedStyle(e).transform),'none');
   console.log('PASS reduced-motion preference');
   await page.getByRole('link',{name:'Open Courtroom'}).click();
-  await page.getByRole('button',{name:'Request 0.90 OKB',exact:true}).click();
+  await request('0.90');
   assert.match(await page.getByTestId('event-log').innerText(),/DENY/);
   console.log('PASS mobile Courtroom navigation and withdrawal');
   assert.deepEqual(errors,[]);
@@ -68,7 +69,7 @@ try {
   console.log('PASS guided sequence executes actual demo logic and captures each remaining allowance');
   await page.getByRole('button',{name:'Replay walkthrough',exact:true}).click();
   assert.match(await page.getByTestId('daily-spent').innerText(),/0.00/);
-  await page.getByRole('button',{name:'Request 0.05 OKB',exact:true}).click();
+  await request('0.05');
   await page.getByRole('button',{name:'Start guided walkthrough',exact:true}).waitFor();
   console.log('PASS replay resets demo and manual actions leave guided mode');
   const links=page.locator('.receipt-links a');

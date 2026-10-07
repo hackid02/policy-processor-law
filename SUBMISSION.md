@@ -1,11 +1,11 @@
 # TapeOut Genesis Transistor Hackathon — corrected submission draft
 
 ## Project
-**Policy Processor (LAW): inspectable Boolean policy circuits on X Layer.**
+**LAW helps vault developers inspect policy decisions against real circuits on X Layer before integrating them.**
 
 LAW explores how policy conditions can become small, testable circuits rather than opaque dashboard promises. The application exposes SpendLimit, Quorum2of3, MoodASIC, DeadMan, and RuleMux netlists, lets users change input flags, and separately compare local predictions with actual processor responses.
 
-The Courtroom demonstrates a precisely specified fixed daily withdrawal budget using simulated browser balances. Revised reference contracts show how a vault can pin one policy, derive its own input flags, reject malformed results, and independently enforce the numeric limit. Those revised vault/registry contracts are locally tested reference implementations, not a claimed mainnet vault deployment.
+The Courtroom is a policy-verification workspace: choose a preset or enter an exact decimal amount, evaluate the local daily-budget scenario, compare its captured flags with the deployed SpendLimit circuit, and export a JSON evidence record. Balances are scenario data, not real custody. Failed RPC calls and mismatches remain failures in both the interface and exported data. Revised reference contracts show how a vault can pin one policy, derive its own input flags, reject malformed results, and independently enforce the numeric limit. Those revised vault/registry contracts are locally tested reference implementations, not a claimed mainnet vault deployment.
 
 ## Why a circuit toolkit?
 
@@ -29,7 +29,7 @@ See [full hashes and fee breakdown](reports/okb-evidence/LAW-OKB-transactions.md
 - **Supply cap:** 2,300,000.
 - **Unit mint price:** 0.000066 OKB, with other fees additional.
 - **Website:** https://policyprocessor.vercel.app/ — corrected frontend published on 2026-10-07.
-- **Source:** https://github.com/hackid02/policy-processor-law — corrected implementation merged through pull request #1. Record the final submitted commit.
+- **Source:** https://github.com/hackid02/policy-processor-law — record the final submitted merge commit and verify the public release matches it.
 - **Video:** attach an updated capture of the corrected flow. The earlier 3:45 film shows the previous prototype and its threshold mismatch; it is not proof of this patch's behavior.
 
 ## Demonstration order
@@ -40,8 +40,8 @@ See [full hashes and fee breakdown](reports/okb-evidence/LAW-OKB-transactions.md
 4. Start the guided Courtroom walkthrough, which resets balance to 1.00, spent to 0.00, and the fixed daily limit to 0.10.
 5. Request 0.90: DENY, unchanged balance.
 6. Request 0.05 twice: ALLOW, then ALLOW; remaining daily budget becomes zero.
-7. Request 0.01: DENY. Deposit more and show it does not reset the budget.
-8. Show the shared policy specification, reference-contract tests, and read-only mainnet verification report.
+7. Evaluate 0.01: DENY. Add scenario balance and show it does not reset the budget. In the decision log, optionally compare a captured request with SpendLimit on X Layer; show the separate local/RPC verdicts and the comparison block. This is read-only evaluation, not execution of a real withdrawal.
+8. Export a comparison record and show its captured input, exact wei amounts, returned output and block. Then show the real-funded manufacturing receipts and reproducible tests.
 
 ## Circuit inventory
 
@@ -71,7 +71,7 @@ Total: 50 gates, 68 input combinations. This count is not a claim of 68 differen
 
 ## Before submitting
 
-- [x] Publish and verify the corrected website and source commit.
+- [ ] Confirm the final policy-toolkit release is published and record its exact source commit before submission.
 - [ ] Re-run local, browser, and mainnet checks against the submitted revision.
 - [ ] Attach the appropriate updated video or a short correction clip, clearly identifying which build is shown.
 - [ ] Locate dated evidence of public supply/price/cap disclosure at deployment; current documentation alone does not establish its timing.

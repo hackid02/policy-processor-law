@@ -30,7 +30,7 @@ The limit is global across depositors and resets at a UTC calendar-day boundary,
 Forced native-token transfers are not credited as deposits; only accounted balances are withdrawable. There is no administrative sweep function.
 
 ### Frontend
-Courtroom accounting is an in-memory browser simulation using integer wei. Reset/reload discards it. It never signs a transaction or moves funds. Its log is not a blockchain receipt.
+Courtroom accounting is an in-memory browser simulation using integer wei. Reset/reload discards it. It never signs a transaction or moves funds. Its log is not a blockchain receipt. Each eligible request can optionally compare its captured adapter input with SpendLimit circuit 1 through read-only X Layer RPC. The response is pinned to a reported block number and belongs only to that log entry; it does not read an on-chain vault balance or override local accounting. Failed balance pre-checks produce no circuit input and cannot be compared. Mismatches, malformed outputs, wrong-chain responses and network errors are displayed without a successful fallback. Reset/removal invalidates pending comparison updates; subsequent requests and UTC rollover do not change historical inputs.
 
 Law Card predictions are labelled LOCAL MODEL. An explicit verification button separately reads the current packed input from an X Layer RPC. Previous checks are invalidated on changes, stale responses are ignored, and mismatches/errors are visible. RPCs remain trusted data providers, not cryptographic proofs presented by the browser.
 
@@ -52,3 +52,9 @@ Use the repository maintainer's security contact for sensitive reports. Do not p
 ## Historical credential hygiene
 
 The repository history contains credential-redaction commits. If any signing key was ever committed, deleting/redacting the file does not make that key safe again. Review this privately, rotate affected credentials where possible, and use a fresh reviewed deployment account for future contracts. This patch does not rotate wallets or remove past Git history. Never send private keys in chat.
+
+## Scenario input and evidence exports
+
+Custom amounts accept positive decimal text with up to 18 fractional digits and a uint256 bound, parsed without floating point. Display formatting preserves wei precision. Preset buttons only select an amount; evaluation is a separate action.
+
+Per-request JSON exports are available after a comparison attempt, including failed or mismatched attempts. Status, errors, exact captured wei values and any returned block/output are preserved. Exported JSON is browser-generated data from a trusted RPC provider, not a signed attestation. Retrying clears the previous result while checking. Browser state is session-only; exported files provide explicit retention.
