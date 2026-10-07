@@ -7,6 +7,18 @@ LAW explores how policy conditions can become small, testable circuits rather th
 
 The Courtroom demonstrates a precisely specified fixed daily withdrawal budget using simulated browser balances. Revised reference contracts show how a vault can pin one policy, derive its own input flags, reject malformed results, and independently enforce the numeric limit. Those revised vault/registry contracts are locally tested reference implementations, not a claimed mainnet vault deployment.
 
+## Why a circuit toolkit?
+
+For a single fixed daily cap, a direct Solidity condition is simpler. LAW does not claim that putting this condition into a circuit automatically makes it safer, cheaper or immutable. The project explores separately inspectable, reusable manufactured policies: explicit input/output conventions, reproducible netlists, and composition demonstrated by RuleMux. The reference adapter shows where trusted input derivation and numeric enforcement must remain outside the Boolean circuit.
+
+The five circuits are separate demonstrations, not five integrated protections in the simulated Courtroom. The current product is a circuit-inspection toolkit with a reference adapter, not production custody software. Intended users are circuit builders and vault integrators; independent adoption has not yet been established.
+
+## Real-funded manufacturing evidence
+
+Seven successful X Layer transactions dated 29 September 2026 record processor creation, transistor minting and five tape-outs. They sent **0.01706 OKB** to contracts and paid **0.000042449222122461 OKB** in reported network fees, totaling **0.017102449222122461 OKB**. This is the sum of transaction value and reported fees for these seven transactions, not complete wallet history or independently traced net cost after any internal refunds.
+
+See [full hashes and fee breakdown](reports/okb-evidence/LAW-OKB-transactions.md), [CSV](reports/okb-evidence/transactions.csv) and [raw transaction/receipt evidence](reports/okb-evidence/verified-transactions.json). Real-funded manufacturing is distinct from simulated Courtroom balances and withdrawals.
+
 ## Required identifiers
 
 - **Chain:** X Layer mainnet, 196.
@@ -22,10 +34,10 @@ The Courtroom demonstrates a precisely specified fixed daily withdrawal budget u
 
 ## Demonstration order
 
-1. Explain the AND truth table and its distinction from numeric arithmetic.
+1. Explain who LAW serves, why inspectable circuits are useful, and the direct-Solidity trade-off.
 2. Toggle SpendLimit inputs and explicitly verify a packed input against X Layer.
 3. Show that Quorum's output `1` means PASS, whereas SpendLimit's `1` means DENY.
-4. Open Courtroom with balance 1.00, spent 0.00, daily limit 0.10.
+4. Start the guided Courtroom walkthrough, which resets balance to 1.00, spent to 0.00, and the fixed daily limit to 0.10.
 5. Request 0.90: DENY, unchanged balance.
 6. Request 0.05 twice: ALLOW, then ALLOW; remaining daily budget becomes zero.
 7. Request 0.01: DENY. Deposit more and show it does not reset the budget.
@@ -62,6 +74,8 @@ Total: 50 gates, 68 input combinations. This count is not a claim of 68 differen
 - [x] Publish and verify the corrected website and source commit.
 - [ ] Re-run local, browser, and mainnet checks against the submitted revision.
 - [ ] Attach the appropriate updated video or a short correction clip, clearly identifying which build is shown.
+- [ ] Locate dated evidence of public supply/price/cap disclosure at deployment; current documentation alone does not establish its timing.
+- [ ] Privately confirm remediation of any historically exposed credentials; redaction alone is not rotation.
 - [ ] Confirm required fields in the actual organizer's submission flow; this Markdown file is not submission confirmation.
 - [ ] Submit before **2026-10-09 04:00 UTC / 05:00 Lagos** under the currently published rules.
 - [ ] Do not present trading leaderboards as hackathon judging scores or manufacture transactions for eligibility.
